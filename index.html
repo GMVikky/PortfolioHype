@@ -11,33 +11,33 @@
     <style>
         /* CSS Variables */
         :root {
-            --primary-color: #5b21b6;
-            --secondary-color: #7c3aed;
+            --primary-color: #6d28d9;
+            --secondary-color: #8b5cf6;
             --accent-color: #a78bfa;
             --text-primary: #1f2937;
             --text-secondary: #4b5563;
             --bg-primary: #ffffff;
-            --bg-secondary: #f9fafb;
+            --bg-secondary: #faf5ff;
             --card-bg: #ffffff;
-            --shadow: rgba(0, 0, 0, 0.08);
-            --shadow-hover: rgba(0, 0, 0, 0.12);
-            --gradient: linear-gradient(135deg, #5b21b6 0%, #7c3aed 100%);
-            --border-color: #e5e7eb;
+            --shadow: rgba(109, 40, 217, 0.08);
+            --shadow-hover: rgba(109, 40, 217, 0.15);
+            --gradient: linear-gradient(135deg, #6d28d9 0%, #8b5cf6 50%, #a78bfa 100%);
+            --border-color: #e9e5ff;
         }
 
         [data-theme="dark"] {
-            --primary-color: #7c3aed;
-            --secondary-color: #a855f7;
-            --accent-color: #c084fc;
+            --primary-color: #8b5cf6;
+            --secondary-color: #a78bfa;
+            --accent-color: #c4b5fd;
             --text-primary: #f3f4f6;
             --text-secondary: #d1d5db;
-            --bg-primary: #111827;
-            --bg-secondary: #1f2937;
-            --card-bg: #374151;
-            --shadow: rgba(0, 0, 0, 0.3);
-            --shadow-hover: rgba(0, 0, 0, 0.5);
-            --gradient: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
-            --border-color: #374151;
+            --bg-primary: #0f0c29;
+            --bg-secondary: #1a1637;
+            --card-bg: #24204a;
+            --shadow: rgba(0, 0, 0, 0.4);
+            --shadow-hover: rgba(139, 92, 246, 0.3);
+            --gradient: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 50%, #c4b5fd 100%);
+            --border-color: #312e81;
         }
 
         * {
@@ -64,24 +64,40 @@
             left: 0;
             z-index: -1;
             overflow: hidden;
+            background: linear-gradient(45deg, #0f0c29, #302b63, #24243e);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        [data-theme="light"] .animated-bg {
+            background: linear-gradient(45deg, #e8e3ff, #f0ebff, #f5f2ff, #ede9ff);
+            background-size: 400% 400%;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .gradient-orb {
             position: absolute;
             border-radius: 50%;
             filter: blur(80px);
-            opacity: 0.3;
+            opacity: 0.4;
             animation: floatEnhanced 25s infinite cubic-bezier(0.23, 1, 0.32, 1);
+            mix-blend-mode: screen;
         }
 
         [data-theme="light"] .gradient-orb {
-            opacity: 0.15;
+            opacity: 0.25;
+            mix-blend-mode: multiply;
         }
 
         .orb1 {
             width: 600px;
             height: 600px;
-            background: var(--primary-color);
+            background: radial-gradient(circle at 30% 30%, #ff006e, #8338ec, #3a86ff);
             top: -200px;
             left: -200px;
             animation-delay: 0s;
@@ -90,7 +106,7 @@
         .orb2 {
             width: 500px;
             height: 500px;
-            background: var(--secondary-color);
+            background: radial-gradient(circle at 70% 70%, #06ffa5, #00d9ff, #7209b7);
             bottom: -150px;
             right: -150px;
             animation-delay: 8s;
@@ -99,24 +115,99 @@
         .orb3 {
             width: 400px;
             height: 400px;
-            background: var(--accent-color);
+            background: radial-gradient(circle at 50% 50%, #ffbe0b, #fb5607, #ff006e);
             top: 50%;
             left: 50%;
             animation-delay: 16s;
         }
 
+        /* Additional decorative orbs */
+        .orb4 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle at 40% 40%, #4cc9f0, #4361ee, #7209b7);
+            top: 20%;
+            right: 20%;
+            animation-delay: 4s;
+            animation-duration: 20s;
+        }
+
+        .orb5 {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle at 60% 60%, #f72585, #b5179e, #560bad);
+            bottom: 30%;
+            left: 10%;
+            animation-delay: 12s;
+            animation-duration: 30s;
+        }
+
+        /* Animated particles */
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: particleFloat 20s linear infinite;
+        }
+
+        [data-theme="light"] .particle {
+            background: rgba(123, 67, 237, 0.3);
+        }
+
+        @keyframes particleFloat {
+            from {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            to {
+                transform: translateY(-100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Create multiple particles */
+        .particle:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 15s; }
+        .particle:nth-child(2) { left: 20%; animation-delay: 2s; animation-duration: 18s; }
+        .particle:nth-child(3) { left: 30%; animation-delay: 4s; animation-duration: 20s; }
+        .particle:nth-child(4) { left: 40%; animation-delay: 6s; animation-duration: 22s; }
+        .particle:nth-child(5) { left: 50%; animation-delay: 8s; animation-duration: 16s; }
+        .particle:nth-child(6) { left: 60%; animation-delay: 10s; animation-duration: 19s; }
+        .particle:nth-child(7) { left: 70%; animation-delay: 12s; animation-duration: 17s; }
+        .particle:nth-child(8) { left: 80%; animation-delay: 14s; animation-duration: 21s; }
+        .particle:nth-child(9) { left: 90%; animation-delay: 16s; animation-duration: 15s; }
+        .particle:nth-child(10) { left: 5%; animation-delay: 18s; animation-duration: 23s; }
+
         @keyframes floatEnhanced {
             0%, 100% { 
                 transform: translate(0, 0) scale(1) rotate(0deg);
+                filter: blur(80px) brightness(1);
             }
             25% { 
                 transform: translate(50px, -80px) scale(1.15) rotate(90deg);
+                filter: blur(70px) brightness(1.2);
             }
             50% { 
                 transform: translate(-30px, 40px) scale(0.85) rotate(180deg);
+                filter: blur(90px) brightness(0.9);
             }
             75% { 
                 transform: translate(80px, -40px) scale(1.05) rotate(270deg);
+                filter: blur(75px) brightness(1.1);
             }
         }
 
@@ -326,42 +417,138 @@
             background-clip: text;
             animation: fadeInUpEnhanced 1s cubic-bezier(0.23, 1, 0.32, 1);
             position: relative;
+            text-shadow: 0 0 30px rgba(139, 92, 246, 0.3);
+            filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.2));
         }
 
         .hero-text h1::after {
             content: '';
             position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 100%;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
             height: 4px;
             background: var(--gradient);
-            transform: scaleX(0);
-            transform-origin: left;
-            animation: scaleInX 1s cubic-bezier(0.23, 1, 0.32, 1) 0.5s forwards;
+            border-radius: 2px;
+            animation: expandLine 1s cubic-bezier(0.23, 1, 0.32, 1) 0.5s forwards;
+        }
+
+        @keyframes expandLine {
+            from {
+                width: 0;
+                opacity: 0;
+            }
+            to {
+                width: 120px;
+                opacity: 1;
+            }
         }
 
         .typewriter {
             font-size: clamp(1.2rem, 3vw, 1.5rem);
-            color: var(--text-secondary);
-            height: 2rem;
+            height: 3rem;
             margin-bottom: 2rem;
             position: relative;
-            overflow: hidden;
+            overflow: visible; /* Changed from hidden to visible */
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .typewriter-wrapper {
+            position: relative;
+            height: 100%;
+            width: 100%;
+            
+            align-items: center;
+            justify-content: center;
         }
 
         .typewriter-text {
-            position: absolute;
-            animation: slideUpEnhanced 10s steps(50) infinite;
+            position: relative;
+            width: 100%;
+            text-align: center;
         }
 
-        @keyframes slideUpEnhanced {
-            0%, 22% { transform: translateY(0); opacity: 1; }
-            25%, 47% { transform: translateY(-2rem); opacity: 1; }
-            50%, 72% { transform: translateY(-4rem); opacity: 1; }
-            75%, 97% { transform: translateY(-6rem); opacity: 1; }
-            100% { transform: translateY(-8rem); opacity: 0; }
+        .typewriter-text div {
+            display: block;
+            height: 3rem;
+            line-height: 3rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+            letter-spacing: 1px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            opacity: 0;
+            white-space: nowrap; /* Prevent text wrapping */
+            animation: showText 16s infinite;
         }
+
+        /* Staggered animation delays for 8 text items */
+        .typewriter-text div:nth-child(1) { animation-delay: 0s; }
+        .typewriter-text div:nth-child(2) { animation-delay: 2s; }
+        .typewriter-text div:nth-child(3) { animation-delay: 4s; }
+        .typewriter-text div:nth-child(4) { animation-delay: 6s; }
+        .typewriter-text div:nth-child(5) { animation-delay: 8s; }
+        .typewriter-text div:nth-child(6) { animation-delay: 10s; }
+        .typewriter-text div:nth-child(7) { animation-delay: 12s; }
+        .typewriter-text div:nth-child(8) { animation-delay: 14s; }
+
+        @keyframes showText {
+            0% {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+                filter: blur(3px);
+            }
+            6.25% { /* 1s into 16s cycle */
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0);
+            }
+            12.5% { /* 2s into 16s cycle - text fully visible */
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0);
+            }
+            18.75% { /* 3s into 16s cycle */
+                opacity: 0;
+                transform: translateY(-30px) scale(0.95);
+                filter: blur(3px);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.95);
+                filter: blur(3px);
+            }
+        }
+
+        /* Optional: Remove gradient overlays if they're causing clipping issues */
+        .typewriter::before,
+        .typewriter::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 30px; /* Reduced from 50px */
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .typewriter::before {
+            left: 0;
+            background: linear-gradient(to right, var(--bg-primary), transparent);
+        }
+
+        .typewriter::after {
+            right: 0;
+            background: linear-gradient(to left, var(--bg-primary), transparent);
+        }
+
 
         .hero-description {
             font-size: clamp(1rem, 2vw, 1.1rem);
@@ -410,12 +597,32 @@
         .btn-primary {
             background: var(--gradient);
             color: white;
-            box-shadow: 0 4px 15px rgba(91, 33, 182, 0.3);
+            box-shadow: 0 4px 15px rgba(109, 40, 217, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
         }
 
         .btn-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(91, 33, 182, 0.4);
+            box-shadow: 0 8px 25px rgba(109, 40, 217, 0.5);
+        }
+
+        .btn-primary:hover::after {
+            width: 300px;
+            height: 300px;
         }
 
         .btn-secondary {
@@ -469,12 +676,20 @@
 
         @keyframes rotateGlow {
             0%, 100% { 
-                filter: drop-shadow(0 0 20px rgba(91, 33, 182, 0.3));
-                transform: rotate(0deg);
+                filter: drop-shadow(0 0 30px rgba(139, 92, 246, 0.5));
+                transform: rotate(0deg) scale(1);
+            }
+            25% {
+                filter: drop-shadow(0 0 40px rgba(167, 139, 250, 0.7));
+                transform: rotate(1deg) scale(1.02);
             }
             50% { 
-                filter: drop-shadow(0 0 30px rgba(124, 58, 237, 0.5));
-                transform: rotate(2deg);
+                filter: drop-shadow(0 0 35px rgba(196, 181, 253, 0.6));
+                transform: rotate(-1deg) scale(1);
+            }
+            75% {
+                filter: drop-shadow(0 0 45px rgba(139, 92, 246, 0.8));
+                transform: rotate(2deg) scale(1.01);
             }
         }
 
@@ -1126,11 +1341,29 @@
             .hero-text h1::after {
                 left: 50%;
                 transform: translateX(-50%);
-                width: 60%;
+                width: 80px;
             }
 
             .typewriter {
-                font-size: 1.2rem;
+                font-size: 1.1rem;
+                height: 2.5rem;
+            }
+
+            .typewriter-text div {
+                height: 2.5rem;
+                line-height: 2.5rem;
+                font-size: 1.1rem;
+            }
+
+            @keyframes rotateWords {
+                0%, 12.5% { transform: translateY(0); }
+                12.5%, 25% { transform: translateY(-2.5rem); }
+                25%, 37.5% { transform: translateY(-5rem); }
+                37.5%, 50% { transform: translateY(-7.5rem); }
+                50%, 62.5% { transform: translateY(-10rem); }
+                62.5%, 75% { transform: translateY(-12.5rem); }
+                75%, 87.5% { transform: translateY(-15rem); }
+                87.5%, 100% { transform: translateY(-17.5rem); }
             }
 
             .hero-description {
@@ -1379,6 +1612,20 @@
         <div class="gradient-orb orb1"></div>
         <div class="gradient-orb orb2"></div>
         <div class="gradient-orb orb3"></div>
+        <div class="gradient-orb orb4"></div>
+        <div class="gradient-orb orb5"></div>
+        <div class="particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
     </div>
 
     <!-- Navigation -->
@@ -1410,15 +1657,17 @@
             <div class="hero-text">
                 <h1>Vinod Kumar Golla</h1>
                 <div class="typewriter">
-                    <div class="typewriter-text">
-                        <div>Full-Stack Developer</div>
-                        <div>Game Designer</div>
-                        <div>Software Engineer</div>
-                        <div>AI Enthusiast</div>
-                        <div>Python Developer</div>
-                        <div>Unity Expert</div>
-                        <div>Technical Mentor</div>
-                        <div>Problem Solver</div>
+                    <div class="typewriter-wrapper">
+                        <div class="typewriter-text">
+                            <div>Full-Stack Developer</div>
+                            <div>Game Designer</div>
+                            <div>Software Engineer</div>
+                            <div>AI Enthusiast</div>
+                            <div>Python Developer</div>
+                            <div>Unity Expert</div>
+                            <div>Technical Mentor</div>
+                            <div>Problem Solver</div>
+                        </div>
                     </div>
                 </div>
                 <p class="hero-description">
