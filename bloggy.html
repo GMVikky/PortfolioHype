@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - Vinod Kumar Golla</title>
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --accent-color: #f093fb;
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f7fafc;
+            --card-bg: #ffffff;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #7c3aed;
+            --secondary-color: #a855f7;
+            --accent-color: #c084fc;
+            --text-primary: #f3f4f6;
+            --text-secondary: #d1d5db;
+            --bg-primary: #111827;
+            --bg-secondary: #1f2937;
+            --card-bg: #374151;
+            --shadow: rgba(0, 0, 0, 0.3);
+            --gradient: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float-up 10s linear infinite;
+        }
+
+        @keyframes float-up {
+            from {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.3;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            to {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px var(--shadow);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] nav {
+            background: rgba(31, 41, 55, 0.9);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(180deg);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 5rem 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            animation: fadeInUp 1.2s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 3rem;
+        }
+
+        /* Blog Posts */
+        .blog-posts {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .blog-post {
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px var(--shadow);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .blog-post:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px var(--shadow);
+        }
+
+        .post-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            position: relative;
+        }
+
+        .post-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: var(--gradient);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .post-content {
+            padding: 2rem;
+        }
+
+        .post-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .post-date {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .post-author {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .post-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .post-excerpt {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .post-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tag {
+            background: var(--bg-secondary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .tag:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .read-more {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .read-more:hover {
+            color: var(--secondary-color);
+            transform: translateX(5px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .sidebar-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px var(--shadow);
+        }
+
+        .sidebar-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .recent-posts {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .recent-post {
+            display: flex;
+            gap: 1rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--bg-secondary);
+        }
+
+        .recent-post:last-child {
+            border-bottom: none;
+        }
+
+        .recent-post-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .recent-post-content {
+            flex: 1;
+        }
+
+        .recent-post-title {
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+            text-decoration: none;
+        }
+
+        .recent-post-title:hover {
+            color: var(--primary-color);
+        }
+
+        .recent-post-date {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .categories {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .category-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            text-decoration: none;
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+        }
+
+        .category-item:hover {
+            color: var(--primary-color);
+        }
+
+        .category-count {
+            background: var(--bg-secondary);
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                padding: 2rem 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .post-content {
+                padding: 1.5rem;
+            }
+
+            .sidebar {
+                order: -1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg" id="particleContainer"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">GMVikky</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="index.html#projects">Projects</a>
+                <a href="blog.html">Blog</a>
+                <a href="project-intro.html">Future Projects</a>
+                <a href="index.html#contact">Contact</a>
+                <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Tech Insights & Innovations</h1>
+        <p>Exploring the cutting edge of technology through detailed analysis, tutorials, and insights 
+           from my journey in software development and emerging tech trends.</p>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Blog Posts -->
+        <div class="blog-posts">
+            <article class="blog-post">
+                <img src="images/img1.jpg" alt="AI Development" class="post-image">
+                <span class="post-badge">AI & ML</span>
+                <div class="post-content">
+                    <div class="post-meta">
+                        <span class="post-date">📅 July 10, 2025</span>
+                        <span class="post-author">👤 Vinod Kumar Golla</span>
+                    </div>
+                    <h2 class="post-title">Building the Future: My Journey with AI-Powered Development Tools</h2>
+                    <p class="post-excerpt">
+                        As artificial intelligence continues to reshape the software development landscape, I've been exploring 
+                        how AI can enhance developer productivity and code quality. In this deep dive, I share my experiences 
+                        building AI-powered tools and the exciting possibilities that lie ahead.
+                    </p>
+                    <div class="post-tags">
+                        <span class="tag">AI</span>
+                        <span class="tag">Machine Learning</span>
+                        <span class="tag">Developer Tools</span>
+                        <span class="tag">Python</span>
+                    </div>
+                    <a href="blog1.html" class="read-more">Read More →</a>
+                </div>
+            </article>
+
+            <article class="blog-post">
+                <img src="images/img5.jpg" alt="Web Development" class="post-image">
+                <span class="post-badge">Web Dev</span>
+                <div class="post-content">
+                    <div class="post-meta">
+                        <span class="post-date">📅 July 8, 2025</span>
+                        <span class="post-author">👤 Vinod Kumar Golla</span>
+                    </div>
+                    <h2 class="post-title">Modern Web Development: Trends That Are Shaping 2025</h2>
+                    <p class="post-excerpt">
+                        The web development ecosystem is evolving rapidly with new frameworks, tools, and methodologies. 
+                        From server-side rendering to edge computing, let's explore the trends that are defining modern 
+                        web development and how they impact user experience.
+                    </p>
+                    <div class="post-tags">
+                        <span class="tag">Web Development</span>
+                        <span class="tag">React</span>
+                        <span class="tag">Next.js</span>
+                        <span class="tag">Performance</span>
+                    </div>
+                    <a href="blog2.html" class="read-more">Read More →</a>
+                </div>
+            </article>
+
+            <article class="blog-post">
+                <img src="images/img4.jpg" alt="Cloud Computing" class="post-image">
+                <span class="post-badge">Cloud</span>
+                <div class="post-content">
+                    <div class="post-meta">
+                        <span class="post-date">📅 July 5, 2025</span>
+                        <span class="post-author">👤 Vinod Kumar Golla</span>
+                    </div>
+                    <h2 class="post-title">Scaling Applications in the Cloud: Lessons from Real-World Projects</h2>
+                    <p class="post-excerpt">
+                        Cloud computing has revolutionized how we build and deploy applications. Through my experience 
+                        working with various cloud platforms, I've learned valuable lessons about scalability, 
+                        cost optimization, and architectural best practices.
+                    </p>
+                    <div class="post-tags">
+                        <span class="tag">Cloud Computing</span>
+                        <span class="tag">AWS</span>
+                        <span class="tag">Scalability</span>
+                        <span class="tag">DevOps</span>
+                    </div>
+                    <a href="blog3.html" class="read-more">Read More →</a>
+                </div>
+            </article>
+
+            <article class="blog-post">
+                <img src="images/img3.jpg" alt="Game Development" class="post-image">
+                <span class="post-badge">Gaming</span>
+                <div class="post-content">
+                    <div class="post-meta">
+                        <span class="post-date">📅 July 2, 2025</span>
+                        <span class="post-author">👤 Vinod Kumar Golla</span>
+                    </div>
+                    <h2 class="post-title">From Concept to Console: The Art of Game Development</h2>
+                    <p class="post-excerpt">
+                        Game development combines creativity with technical expertise in unique ways. In this post, 
+                        I explore the fascinating world of game development, from initial concept to final deployment, 
+                        sharing insights from my own gaming projects.
+                    </p>
+                    <div class="post-tags">
+                        <span class="tag">Game Development</span>
+                        <span class="tag">Unity</span>
+                        <span class="tag">C#</span>
+                        <span class="tag">3D Graphics</span>
+                    </div>
+                    <a href="blog4.html" class="read-more">Read More →</a>
+                </div>
+            </article>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-card">
+                <h3 class="sidebar-title">Recent Posts</h3>
+                <div class="recent-posts">
+                    <div class="recent-post">
+                        <img src="images/img6.jpg" alt="AI Post" class="recent-post-image">
+                        <div class="recent-post-content">
+                            <a href="#" class="recent-post-title">Building AI-Powered Development Tools</a>
+                            <div class="recent-post-date">July 10, 2025</div>
+                        </div>
+                    </div>
+                    <div class="recent-post">
+                        <img src="images/img7.jpg" alt="Web Post" class="recent-post-image">
+                        <div class="recent-post-content">
+                            <a href="#" class="recent-post-title">Modern Web Development Trends</a>
+                            <div class="recent-post-date">July 8, 2025</div>
+                        </div>
+                    </div>
+                    <div class="recent-post">
+                        <img src="images/img8.jpg" alt="Cloud Post" class="recent-post-image">
+                        <div class="recent-post-content">
+                            <a href="#" class="recent-post-title">Scaling Applications in the Cloud</a>
+                            <div class="recent-post-date">July 5, 2025</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-card">
+                <h3 class="sidebar-title">Categories</h3>
+                <div class="categories">
+                    <a href="#" class="category-item">
+                        <span>AI & Machine Learning</span>
+                        <span class="category-count">8</span>
+                    </a>
+                    <a href="#" class="category-item">
+                        <span>Web Development</span>
+                        <span class="category-count">12</span>
+                    </a>
+                    <a href="#" class="category-item">
+                        <span>Cloud Computing</span>
+                        <span class="category-count">6</span>
+                    </a>
+                    <a href="#" class="category-item">
+                        <span>Game Development</span>
+                        <span class="category-count">4</span>
+                    </a>
+                    <a href="#" class="category-item">
+                        <span>Mobile Development</span>
+                        <span class="category-count">3</span>
+                    </a>
+                    <a href="#" class="category-item">
+                        <span>DevOps</span>
+                        <span class="category-count">5</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="sidebar-card">
+                <h3 class="sidebar-title">Popular Tags</h3>
+                <div class="post-tags">
+                    <span class="tag">JavaScript</span>
+                    <span class="tag">Python</span>
+                    <span class="tag">React</span>
+                    <span class="tag">AI</span>
+                    <span class="tag">Cloud</span>
+                    <span class="tag">DevOps</span>
+                    <span class="tag">UI/UX</span>
+                    <span class="tag">Performance</span>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <script>
+        // Create floating particles
+        function createParticles() {
+            const container = document.getElementById('particleContainer');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 10 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        // Theme toggle
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            const themeToggle = document.querySelector('.theme-toggle');
+            themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+        }
+
+        // Initialize
+        window.addEventListener('DOMContentLoaded', () => {
+            // Load theme
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.body.setAttribute('data-theme', savedTheme);
+            const themeToggle = document.querySelector('.theme-toggle');
+            themeToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+            
+            // Create particles
+            createParticles();
+            
+            // Animate elements on scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            // Apply animations
+            const animateElements = document.querySelectorAll('.blog-post, .sidebar-card');
+            animateElements.forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'all 0.6s ease';
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>

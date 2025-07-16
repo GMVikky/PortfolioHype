@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coding Quiz - Vinod Kumar Golla</title>
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --success-color: #10b981;
+            --error-color: #ef4444;
+            --warning-color: #f59e0b;
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f7fafc;
+            --card-bg: #ffffff;
+            --code-bg: #1e293b;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --text-primary: #f3f4f6;
+            --text-secondary: #d1d5db;
+            --bg-primary: #111827;
+            --bg-secondary: #1f2937;
+            --card-bg: #374151;
+            --code-bg: #0f172a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--card-bg);
+            box-shadow: 0 2px 10px var(--shadow);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(180deg);
+        }
+
+        /* Quiz Container */
+        .quiz-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .quiz-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .quiz-progress {
+            background: var(--bg-secondary);
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 3rem;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            width: 20%;
+            transition: width 0.3s ease;
+        }
+
+        /* Question Card */
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .question-number {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .difficulty {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .difficulty.easy {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .difficulty.medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .difficulty.hard {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        [data-theme="dark"] .difficulty.easy {
+            background: #065f46;
+            color: #d1fae5;
+        }
+
+        [data-theme="dark"] .difficulty.medium {
+            background: #92400e;
+            color: #fef3c7;
+        }
+
+        [data-theme="dark"] .difficulty.hard {
+            background: #991b1b;
+            color: #fee2e2;
+        }
+
+        .question-title {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .question-description {
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        /* Code Editor */
+        .code-editor {
+            margin-bottom: 1.5rem;
+        }
+
+        .editor-header {
+            background: var(--code-bg);
+            padding: 0.5rem 1rem;
+            border-radius: 10px 10px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .language-selector {
+            background: transparent;
+            color: #64748b;
+            border: 1px solid #334155;
+            padding: 0.3rem 0.8rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .code-area {
+            background: var(--code-bg);
+            color: #e2e8f0;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 14px;
+            padding: 1rem;
+            border-radius: 0 0 10px 10px;
+            min-height: 300px;
+            resize: vertical;
+            border: none;
+            outline: none;
+            width: 100%;
+        }
+
+        /* Test Cases */
+        .test-cases {
+            margin-bottom: 1.5rem;
+        }
+
+        .test-case {
+            background: var(--bg-secondary);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .test-case-header {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .test-status {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #e5e7eb;
+        }
+
+        .test-status.passed {
+            background: var(--success-color);
+        }
+
+        .test-status.failed {
+            background: var(--error-color);
+        }
+
+        .test-input, .test-output {
+            font-family: monospace;
+            font-size: 0.9rem;
+            margin: 0.3rem 0;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-run {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .btn-run:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-next {
+            background: var(--success-color);
+            color: white;
+            margin-left: auto;
+        }
+
+        .btn-next:hover {
+            background: #059669;
+        }
+
+        /* Results Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .result-score {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 1rem 0;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .result-message {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .quiz-header h1 {
+                font-size: 2rem;
+            }
+
+            .question-card {
+                padding: 1.5rem;
+            }
+
+            .action-buttons {
+                flex-wrap: wrap;
+            }
+
+            .btn {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">VKG</a>
+            <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+        </div>
+    </nav>
+
+    <!-- Quiz Container -->
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <h1>Coding Challenge</h1>
+            <p>Test your programming skills with these carefully selected problems</p>
+        </div>
+
+        <div class="quiz-progress">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <div id="questionContainer">
+            <!-- Questions will be dynamically loaded here -->
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn btn-run" onclick="runCode()">Run Code</button>
+            <button class="btn btn-submit" onclick="submitCode()">Submit</button>
+            <button class="btn btn-next" onclick="nextQuestion()" style="display: none;">Next Question</button>
+        </div>
+    </div>
+
+    <!-- Results Modal -->
+    <div class="modal" id="resultsModal">
+        <div class="modal-content">
+            <h2>Quiz Complete! 🎉</h2>
+            <div class="result-score" id="finalScore">0/5</div>
+            <p class="result-message" id="resultMessage">Great job!</p>
+            <button class="btn btn-submit" onclick="location.href='index.html'">Back to Portfolio</button>
+        </div>
+    </div>
+
+    <script>
+        // Quiz Questions
+        const questions = [
+            {
+                id: 1,
+                title: "Two Sum",
+                difficulty: "easy",
+                description: "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target. You may assume that each input would have exactly one solution.",
+                examples: [
+                    { input: "nums = [2,7,11,15], target = 9", output: "[0,1]", explanation: "Because nums[0] + nums[1] == 9" },
+                    { input: "nums = [3,2,4], target = 6", output: "[1,2]", explanation: "Because nums[1] + nums[2] == 6" }
+                ],
+                starterCode: {
+                    python: `def twoSum(nums, target):
+    # Your code here
+    pass`,
+                    javascript: `function twoSum(nums, target) {
+    // Your code here
+}`
+                },
+                testCases: [
+                    { input: [[2,7,11,15], 9], expected: [0,1] },
+                    { input: [[3,2,4], 6], expected: [1,2] },
+                    { input: [[3,3], 6], expected: [0,1] }
+                ]
+            },
+            {
+                id: 2,
+                title: "Valid Parentheses",
+                difficulty: "easy",
+                description: "Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid. An input string is valid if: Open brackets must be closed by the same type of brackets, and open brackets must be closed in the correct order.",
+                examples: [
+                    { input: 's = "()"', output: "true", explanation: "Valid parentheses" },
+                    { input: 's = "()[]{}"', output: "true", explanation: "All brackets are properly closed" },
+                    { input: 's = "(]"', output: "false", explanation: "Mismatched brackets" }
+                ],
+                starterCode: {
+                    python: `def isValid(s):
+    # Your code here
+    pass`,
+                    javascript: `function isValid(s) {
+    // Your code here
+}`
+                },
+                testCases: [
+                    { input: ["()"], expected: true },
+                    { input: ["()[]{}"], expected: true },
+                    { input: ["(]"], expected: false },
+                    { input: ["([)]"], expected: false }
+                ]
+            },
+            {
+                id: 3,
+                title: "Binary Tree Maximum Path Sum",
+                difficulty: "hard",
+                description: "Given a binary tree, find the maximum path sum. A path is defined as any sequence of nodes from some starting node to any node in the tree along the parent-child connections.",
+                examples: [
+                    { input: "root = [1,2,3]", output: "6", explanation: "The path 2 -> 1 -> 3 gives sum = 6" },
+                    { input: "root = [-10,9,20,null,null,15,7]", output: "42", explanation: "The path 15 -> 20 -> 7 gives sum = 42" }
+                ],
+                starterCode: {
+                    python: `class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def maxPathSum(root):
+    # Your code here
+    pass`,
+                    javascript: `class TreeNode {
+    constructor(val = 0, left = null, right = null) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+function maxPathSum(root) {
+    // Your code here
+}`
+                },
+                testCases: [
+                    { input: [[1,2,3]], expected: 6 },
+                    { input: [[-10,9,20,null,null,15,7]], expected: 42 }
+                ]
+            },
+            {
+                id: 4,
+                title: "Merge K Sorted Lists",
+                difficulty: "hard",
+                description: "You are given an array of k linked-lists lists, each linked-list is sorted in ascending order. Merge all the linked-lists into one sorted linked-list and return it.",
+                examples: [
+                    { input: "lists = [[1,4,5],[1,3,4],[2,6]]", output: "[1,1,2,3,4,4,5,6]", explanation: "Merging all lists into one sorted list" },
+                    { input: "lists = []", output: "[]", explanation: "Empty input" }
+                ],
+                starterCode: {
+                    python: `class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def mergeKLists(lists):
+    # Your code here
+    pass`,
+                    javascript: `class ListNode {
+    constructor(val = 0, next = null) {
+        this.val = val;
+        this.next = next;
+    }
+}
+
+function mergeKLists(lists) {
+    // Your code here
+}`
+                },
+                testCases: [
+                    { input: [[[1,4,5],[1,3,4],[2,6]]], expected: [1,1,2,3,4,4,5,6] },
+                    { input: [[]], expected: [] }
+                ]
+            },
+            {
+                id: 5,
+                title: "Longest Common Subsequence",
+                difficulty: "medium",
+                description: "Given two strings text1 and text2, return the length of their longest common subsequence. A subsequence is a sequence that can be derived from another sequence by deleting some or no elements without changing the order of the remaining elements.",
+                examples: [
+                    { input: 'text1 = "abcde", text2 = "ace"', output: "3", explanation: 'The longest common subsequence is "ace"' },
+                    { input: 'text1 = "abc", text2 = "abc"', output: "3", explanation: 'The longest common subsequence is "abc"' }
+                ],
+                starterCode: {
+                    python: `def longestCommonSubsequence(text1, text2):
+    # Your code here
+    pass`,
+                    javascript: `function longestCommonSubsequence(text1, text2) {
+    // Your code here
+}`
+                },
+                testCases: [
+                    { input: ["abcde", "ace"], expected: 3 },
+                    { input: ["abc", "abc"], expected: 3 },
+                    { input: ["abc", "def"], expected: 0 }
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let currentLanguage = 'python';
+
+        // Load question
+        function loadQuestion() {
+            const question = questions[currentQuestion];
+            const container = document.getElementById('questionContainer');
+            
+            container.innerHTML = `
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">Question ${currentQuestion + 1} of ${questions.length}</span>
+                        <span class="difficulty ${question.difficulty}">${question.difficulty.toUpperCase()}</span>
+                    </div>
+                    <h2 class="question-title">${question.title}</h2>
+                    <p class="question-description">${question.description}</p>
+                    
+                    <div class="examples">
+                        <h3>Examples:</h3>
+                        ${question.examples.map((ex, i) => `
+                            <div class="test-case">
+                                <div><strong>Example ${i + 1}:</strong></div>
+                                <div class="test-input">Input: ${ex.input}</div>
+                                <div class="test-output">Output: ${ex.output}</div>
+                                ${ex.explanation ? `<div style="color: var(--text-secondary); font-size: 0.9rem;">Explanation: ${ex.explanation}</div>` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <div class="code-editor">
+                        <div class="editor-header">
+                            <span style="color: #64748b;">Code Editor</span>
+                            <select class="language-selector" onchange="changeLanguage(this.value)">
+                                <option value="python">Python</option>
+                                <option value="javascript">JavaScript</option>
+                            </select>
+                        </div>
+                        <textarea class="code-area" id="codeEditor">${question.starterCode[currentLanguage]}</textarea>
+                    </div>
+                    
+                    <div class="test-cases" id="testResults">
+                        <h3>Test Cases:</h3>
+                        ${question.testCases.map((tc, i) => `
+                            <div class="test-case">
+                                <div class="test-case-header">
+                                    <span class="test-status" id="test-${i}"></span>
+                                    <span>Test Case ${i + 1}</span>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            
+            updateProgress();
+        }
+
+        // Change programming language
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            const question = questions[currentQuestion];
+            document.getElementById('codeEditor').value = question.starterCode[lang];
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        // Run code (mock implementation)
+        function runCode() {
+            const code = document.getElementById('codeEditor').value;
+            
+            // Mock test results
+            const testResults = questions[currentQuestion].testCases.map((tc, i) => {
+                const passed = Math.random() > 0.3; // 70% chance of passing
+                const testElement = document.getElementById(`test-${i}`);
+                testElement.className = `test-status ${passed ? 'passed' : 'failed'}`;
+                return passed;
+            });
+            
+            alert(`Test Results: ${testResults.filter(r => r).length}/${testResults.length} passed`);
+        }
+
+        // Submit code
+        function submitCode() {
+            const passed = Math.random() > 0.4; // 60% chance of passing all tests
+            
+            if (passed) {
+                score++;
+                alert('✅ All test cases passed! Great job!');
+                
+                // Show next button
+                document.querySelector('.btn-next').style.display = 'block';
+            } else {
+                alert('❌ Some test cases failed. Try again!');
+            }
+        }
+
+        // Next question
+        function nextQuestion() {
+            currentQuestion++;
+            
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+                document.querySelector('.btn-next').style.display = 'none';
+            } else {
+                showResults();
+            }
+        }
+
+        // Show final results
+        function showResults() {
+            const modal = document.getElementById('resultsModal');
+            const scoreElement = document.getElementById('finalScore');
+            const messageElement = document.getElementById('resultMessage');
+            
+            scoreElement.textContent = `${score}/${questions.length}`;
+            
+            let message = '';
+            const percentage = (score / questions.length) * 100;
+            
+            if (percentage === 100) {
+                message = 'Perfect score! You\'re a coding master! 🏆';
+            } else if (percentage >= 80) {
+                message = 'Excellent work! You\'re doing great! 🌟';
+            } else if (percentage >= 60) {
+                message = 'Good job! Keep practicing! 💪';
+            } else {
+                message = 'Nice try! Practice makes perfect! 📚';
+            }
+            
+            messageElement.textContent = message;
+            modal.style.display = 'flex';
+        }
+
+        // Theme toggle
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            const themeToggle = document.querySelector('.theme-toggle');
+            themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+        }
+
+        // Initialize
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.body.setAttribute('data-theme', savedTheme);
+            const themeToggle = document.querySelector('.theme-toggle');
+            themeToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+            
+            loadQuestion();
+        });
+    </script>
+</body>
+</html>
