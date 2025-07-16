@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getting Started with Unity Game Development - Vinod Kumar Golla</title>
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f7fafc;
+            --card-bg: #ffffff;
+            --code-bg: #2d3748;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #7c3aed;
+            --secondary-color: #a855f7;
+            --text-primary: #f3f4f6;
+            --text-secondary: #d1d5db;
+            --bg-primary: #111827;
+            --bg-secondary: #1f2937;
+            --card-bg: #374151;
+            --code-bg: #1e293b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.8;
+            transition: all 0.3s ease;
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--card-bg);
+            box-shadow: 0 2px 10px var(--shadow);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Article Container */
+        .article-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Article Header */
+        .article-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 3rem 0;
+        }
+
+        .article-title {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .article-meta {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .article-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Article Content */
+        .article-content {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+        }
+
+        .article-content h2 {
+            font-size: 2rem;
+            margin: 2rem 0 1rem;
+            color: var(--text-primary);
+        }
+
+        .article-content h3 {
+            font-size: 1.5rem;
+            margin: 1.5rem 0 1rem;
+            color: var(--text-primary);
+        }
+
+        .article-content p {
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        .article-content ul, .article-content ol {
+            margin: 1rem 0 1.5rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        .article-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight {
+            background: linear-gradient(to right, transparent 0%, rgba(102, 126, 234, 0.1) 10%, rgba(102, 126, 234, 0.1) 90%, transparent 100%);
+            padding: 2rem;
+            border-left: 4px solid var(--primary-color);
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9rem;
+        }
+
+        .tip {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .tip-header {
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Share Section */
+        .share-section {
+            margin-top: 4rem;
+            padding: 2rem;
+            background: var(--bg-secondary);
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .share-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .share-btn {
+            padding: 0.8rem 1.5rem;
+            background: var(--gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .share-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Related Posts */
+        .related-posts {
+            margin-top: 4rem;
+        }
+
+        .related-posts h3 {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .related-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px var(--shadow);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .related-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px var(--shadow);
+        }
+
+        .related-card h4 {
+            margin-bottom: 0.5rem;
+        }
+
+        .related-card p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .article-title {
+                font-size: 2rem;
+            }
+
+            .article-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">VKG</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="blog.html">All Posts</a>
+                <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Article Container -->
+    <div class="article-container">
+        <!-- Article Header -->
+        <header class="article-header">
+            <h1 class="article-title">Getting Started with Unity Game Development</h1>
+            <div class="article-meta">
+                <span>📅 March 15, 2025</span>
+                <span>⏱️ 10 min read</span>
+                <span>🎮 Game Development</span>
+            </div>
+        </header>
+
+        <!-- Article Content -->
+        <article class="article-content">
+            <p>
+                Unity has revolutionized game development by making it accessible to developers of all skill levels. 
+                As someone who has developed multiple games including a 3D racing game with over 5,000 downloads, 
+                I'm excited to share my journey and help you get started with Unity game development.
+            </p>
+
+            <h2>Why Choose Unity?</h2>
+            <p>
+                Unity stands out as one of the most versatile game engines available today. Its cross-platform 
+                capabilities allow you to deploy your games on PC, mobile, consoles, and even VR platforms with 
+                minimal code changes. The vast asset store and supportive community make it an ideal choice for 
+                both beginners and professionals.
+            </p>
+
+            <div class="highlight">
+                <strong>Fun Fact:</strong> Over 50% of mobile games are made with Unity, including popular titles 
+                like Pokémon GO, Monument Valley, and Among Us!
+            </div>
+
+            <h2>Setting Up Your Development Environment</h2>
+            <p>
+                Getting started with Unity is straightforward. Here's what you'll need:
+            </p>
+
+            <ol>
+                <li><strong>Unity Hub:</strong> Download and install Unity Hub from the official website</li>
+                <li><strong>Unity Editor:</strong> Install the latest LTS (Long Term Support) version</li>
+                <li><strong>Visual Studio:</strong> For C# scripting (comes bundled with Unity)</li>
+                <li><strong>Blender (Optional):</strong> For creating custom 3D models</li>
+            </ol>
+
+            <div class="code-block">
+// Your first Unity script
+using UnityEngine;
+
+public class PlayerController : MonoBehaviour
+{
+    public float moveSpeed = 5f;
+    
+    void Update()
+    {
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
+        
+        Vector3 movement = new Vector3(horizontal, 0f, vertical);
+        transform.Translate(movement * moveSpeed * Time.deltaTime);
+    }
+}
+            </div>
+
+            <h2>Understanding the Unity Interface</h2>
+            <p>
+                The Unity interface consists of several key windows that you'll use frequently:
+            </p>
+
+            <ul>
+                <li><strong>Scene View:</strong> Where you build and arrange your game world</li>
+                <li><strong>Game View:</strong> Preview of how your game looks to players</li>
+                <li><strong>Hierarchy:</strong> List of all GameObjects in your scene</li>
+                <li><strong>Inspector:</strong> Properties and components of selected objects</li>
+                <li><strong>Project:</strong> All assets in your project</li>
+            </ul>
+
+            <div class="tip">
+                <div class="tip-header">💡 Pro Tip:</div>
+                <p>
+                    Customize your workspace layout by dragging and docking windows. Save your favorite 
+                    layouts using the Layout dropdown in the top-right corner!
+                </p>
+            </div>
+
+            <h2>Core Concepts Every Unity Developer Should Know</h2>
+
+            <h3>1. GameObjects and Components</h3>
+            <p>
+                Everything in Unity is a GameObject. These are containers that hold components, which define 
+                the object's behavior and properties. Think of GameObjects as empty boxes and components as 
+                the items you put inside to give them functionality.
+            </p>
+
+            <h3>2. The Transform Component</h3>
+            <p>
+                Every GameObject has a Transform component that defines its position, rotation, and scale in 
+                3D space. Understanding transforms is crucial for moving objects and creating game mechanics.
+            </p>
+
+            <h3>3. Prefabs</h3>
+            <p>
+                Prefabs are reusable GameObject templates. Create a prefab once, and instantiate it multiple 
+                times throughout your game. This is essential for enemies, collectibles, and any repeated elements.
+            </p>
+
+            <div class="code-block">
+// Instantiating a prefab
+public GameObject enemyPrefab;
+public Transform spawnPoint;
+
+void SpawnEnemy()
+{
+    GameObject newEnemy = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
+    // Additional setup code here
+}
+            </div>
+
+            <h2>Building Your First Game</h2>
+            <p>
+                Let's create a simple endless runner as your first project. This will teach you the fundamentals 
+                while keeping things manageable:
+            </p>
+
+            <ol>
+                <li>Create a new 3D project in Unity Hub</li>
+                <li>Set up a simple level with platforms</li>
+                <li>Create a player character with basic movement</li>
+                <li>Add obstacles and collectibles</li>
+                <li>Implement a scoring system</li>
+                <li>Create a game over condition</li>
+            </ol>
+
+            <div class="highlight">
+                <strong>My Experience:</strong> When I created my 3D racing game, I started with just a cube 
+                moving on a plane. Don't be afraid to start simple and iterate!
+            </div>
+
+            <h2>Optimization Tips for Better Performance</h2>
+            <p>
+                Performance is crucial, especially for mobile games. Here are some optimization strategies I've 
+                learned through developing games for multiple platforms:
+            </p>
+
+            <ul>
+                <li><strong>Use Object Pooling:</strong> Reuse objects instead of constantly creating/destroying them</li>
+                <li><strong>Optimize Textures:</strong> Use appropriate resolution and compression settings</li>
+                <li><strong>LOD (Level of Detail):</strong> Use simpler models for distant objects</li>
+                <li><strong>Batch Draw Calls:</strong> Combine meshes and use texture atlases</li>
+                <li><strong>Profile Regularly:</strong> Use Unity's Profiler to identify bottlenecks</li>
+            </ul>
+
+            <h2>Resources for Continued Learning</h2>
+            <p>
+                The Unity community is incredibly supportive. Here are my favorite resources:
+            </p>
+
+            <ul>
+                <li><strong>Unity Learn:</strong> Official tutorials and courses</li>
+                <li><strong>Brackeys (YouTube):</strong> Excellent tutorials for beginners</li>
+                <li><strong>Unity Forum:</strong> Get help from experienced developers</li>
+                <li><strong>Game Dev Stack Exchange:</strong> Q&A for specific problems</li>
+                <li><strong>Unity Asset Store:</strong> Free and paid assets to speed up development</li>
+            </ul>
+
+            <div class="tip">
+                <div class="tip-header">🎯 Challenge Yourself:</div>
+                <p>
+                    Participate in game jams! They're a great way to practice, meet other developers, and 
+                    push your creative boundaries. Start with shorter jams like Ludum Dare or 1-week game jams.
+                </p>
+            </div>
+
+            <h2>Common Pitfalls and How to Avoid Them</h2>
+            <p>
+                Through my journey developing games like my multiplayer FPS and 2D platformer, I've encountered 
+                several common mistakes:
+            </p>
+
+            <ol>
+                <li><strong>Scope Creep:</strong> Start small. Your first game doesn't need to be the next AAA title</li>
+                <li><strong>Ignoring Mobile Optimization:</strong> If targeting mobile, test early and often on actual devices</li>
+                <li><strong>Not Using Version Control:</strong> Set up Git from day one. You'll thank yourself later</li>
+                <li><strong>Perfectionism:</strong> Ship your game! It's better to release something than to endlessly polish</li>
+            </ol>
+
+            <h2>Conclusion</h2>
+            <p>
+                Unity game development is an exciting journey that combines creativity with technical skills. 
+                Whether you're interested in creating mobile games, VR experiences, or console titles, Unity 
+                provides the tools and flexibility to bring your ideas to life.
+            </p>
+
+            <p>
+                Remember, every expert was once a beginner. Start with simple projects, be consistent with your 
+                learning, and don't be afraid to experiment. The game development community is here to support you!
+            </p>
+
+            <div class="highlight">
+                <strong>Next Steps:</strong> Download Unity Hub, follow a beginner tutorial, and create your 
+                first simple game. Join the Unity subreddit or Discord to connect with other developers. 
+                Most importantly, have fun creating!
+            </div>
+        </article>
+
+        <!-- Share Section -->
+        <div class="share-section">
+            <h3>Found this article helpful?</h3>
+            <p>Share it with fellow aspiring game developers!</p>
+            <div class="share-buttons">
+                <a href="#" class="share-btn">Share on Twitter</a>
+                <a href="#" class="share-btn">Share on LinkedIn</a>
+            </div>
+        </div>
+
+        <!-- Related Posts -->
+        <div class="related-posts">
+            <h3>Related Articles</h3>
+            <div class="related-grid">
+                <a href="blog-ai-python.html" class="related-card">
+                    <h4>Building AI-Powered Applications with Python</h4>
+                    <p>Learn how to integrate AI and machine learning into your Python applications</p>
+                </a>
+                <a href="blog-cloud.html" class="related-card">
+                    <h4>Cloud Architecture Best Practices</h4>
+                    <p>Essential patterns and practices for building scalable cloud applications</p>
+                </a>
+                <a href="blog-journey.html" class="related-card">
+                    <h4>My Journey from Diploma to B.Tech</h4>
+                    <p>Personal insights and lessons learned during my educational journey</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme toggle
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            const themeToggle = document.querySelector('.theme-toggle');
+            themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+        }
+
+        // Load theme
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.body.setAttribute('data-theme', savedTheme);
+            const themeToggle = document.querySelector('.theme-toggle');
+            themeToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+        });
+    </script>
+</body>
+</html>
